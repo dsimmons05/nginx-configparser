@@ -59,3 +59,31 @@ TEST_F(NginxConfigTest, DoubleNestParse) {
     EXPECT_TRUE(ParseString("foo { bar 100; foo2 { bar2 200; } }"));
 
 }
+
+/* Check that having unclosed brackets will fail. */
+TEST_F(NginxConfigTest, UnclosedBrackets) {
+
+    EXPECT_FALSE(ParseString("foo {bar ;"));
+
+}
+
+/* Check that having unbalanced nesting will fail. */
+TEST_F(NginxConfigTest, UnbalancedNest) {
+
+    EXPECT_FALSE(ParseString("foo { bar 100; foo2 { bar2 200; }"));
+
+}
+
+/* Check that having out of order brackets fails. */
+TEST_F(NginxConfigTest, UnorderedBrackets) {
+
+    EXPECT_FALSE(ParseString("foo } bar 100; {"));
+
+}
+
+/* Parsing an empty string fails */
+TEST_F(NginxConfigTest, EmptyConfig) {
+
+    EXPECT_FALSE(ParseString(""));
+
+}
