@@ -197,7 +197,7 @@ bool NginxConfigParser::Parse(std::istream* config_file, NginxConfig* config) {
         break;
       }
     } else if (token_type == TOKEN_TYPE_START_BLOCK) {
-      balanced += 1;
+      balanced++;
       if (last_token_type != TOKEN_TYPE_NORMAL) {
         // Error.
         break;
@@ -207,7 +207,11 @@ bool NginxConfigParser::Parse(std::istream* config_file, NginxConfig* config) {
           new_config);
       config_stack.push(new_config);
     } else if (token_type == TOKEN_TYPE_END_BLOCK) {
-      balanced += -1;
+
+      /* When you have closed a bracket */
+
+      balanced--;
+
       if (last_token_type != TOKEN_TYPE_STATEMENT_END &&
           last_token_type != TOKEN_TYPE_END_BLOCK) {
         // Error.
@@ -223,7 +227,7 @@ bool NginxConfigParser::Parse(std::istream* config_file, NginxConfig* config) {
 
       // Check that brackets are balanced
       if (balanced != 0) {
-        return false;
+        break;
       }
 
       return true;

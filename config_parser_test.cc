@@ -87,3 +87,13 @@ TEST_F(NginxConfigTest, EmptyConfig) {
     EXPECT_FALSE(ParseString(""));
 
 }
+
+/* Testing whitespace */
+TEST_F(NginxConfigTest, WhiteSpace) {
+
+    EXPECT_TRUE(ParseString(
+        "foo {\n"
+        "bar 100;\n"
+        "}"));
+
+}
